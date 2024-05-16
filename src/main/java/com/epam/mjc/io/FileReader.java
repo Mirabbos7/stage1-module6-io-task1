@@ -4,16 +4,18 @@ import java.io.BufferedReader;
 import java.io.File;
 
 public class FileReader {
-    final private static String File_PATH = "src/main/resources/Profile.txt";
+    public static void main(String[] args) {
+        FileReader fileReader = new FileReader();
+        fileReader.getDataFromFile(new File("src/main/resources/Profile.txt"));
+    }
+
     public Profile getDataFromFile(File file) {
-        try{
-            BufferedReader reader = new BufferedReader(new java.io.FileReader(File_PATH));
+        try (BufferedReader reader = new BufferedReader(new java.io.FileReader("src/main/resources/Profile.txt"));) {
             String line;
-            while((line = reader.readLine()) != null){
+            while ((line = reader.readLine()) != null) {
                 System.out.println(line);
             }
-            reader.close();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return new Profile();
