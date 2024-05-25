@@ -31,7 +31,7 @@ public class FileReader {
                             profile.setEmail(value);
                             break;
                         case "Phone":
-                            profile.setPhone(value);
+                            profile.setPhone(Long.valueOf(value));
                             break;
                         default:
                             System.err.println("Unknown key: " + key);
