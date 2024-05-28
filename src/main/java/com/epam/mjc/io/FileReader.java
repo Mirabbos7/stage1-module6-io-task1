@@ -1,9 +1,14 @@
 package com.epam.mjc.io;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger; // Import Log4j Logger
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 
 public class FileReader {
+    private static final Logger logger = LogManager.getLogger(FileReader.class);
 
     public static void main(String[] args) {
         FileReader fileReader = new FileReader();
@@ -25,23 +30,29 @@ public class FileReader {
                             profile.setName(value);
                             break;
                         case "Age":
-                            profile.setAge(Integer.parseInt(value));
+                            try {
+                                profile.setAge(Integer.parseInt(value));
+                            } catch (NumberFormatException e) {
+                                logger.error("Error parsing age: {}", e.getMessage());
+                            }
                             break;
                         case "Email":
                             profile.setEmail(value);
                             break;
                         case "Phone":
-                            profile.setPhone(Long.valueOf(value));
+                            try {
+                                profile.setPhone(Long.parseLong(value));
+                            } catch (NumberFormatException e) {
+                                logger.error("Error parsing phone number: {}", e.getMessage());
+                            }
                             break;
                         default:
-                            System.err.println("Unknown key: " + key);
+                            logger.warn("Unknown key: {}", key);
                     }
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (NumberFormatException e) {
-            System.err.println("Error parsing age: " + e.getMessage());
+            logger.error("Error reading file: {}", e.getMessage());
         }
         return profile;
     }
